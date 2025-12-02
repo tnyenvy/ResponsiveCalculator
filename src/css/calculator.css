@@ -1,0 +1,85 @@
+.calc {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  background: white;
+}
+
+.calc.dark {
+  background: black;
+  color: white;
+}
+
+/* Display */
+.calc-display {
+  margin-top: 50px;
+  text-align: right;
+}
+
+.calc-display .equation {
+  font-size: 22px;
+  opacity: 0.6;
+}
+
+.calc-display .result {
+  font-size: 56px;
+  font-weight: 300;
+}
+
+/* Grid */
+.calc-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* wrapper */
+.calculator-wrapper {
+  display: flex;
+  flex-direction: column; 
+  width: 100%;
+}
+
+
+/* Buttons */
+.btn {
+  height: 70px;
+  border-radius: 50%;
+  font-size: 26px;
+  font-weight: 300;
+  border: none;
+  cursor: pointer;
+}
+
+.btn.gray {
+  background: #d1d1d6;
+}
+
+.calc.dark .btn.gray {
+  background: #505050;
+  color: white;
+}
+
+.btn.dark {
+  background: #f2f2f2;
+}
+
+.calc.dark .btn.dark {
+  background: #333333;
+  color: white;
+}
+
+.btn.blue {
+  background: #007aff;
+  color: white;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  margin-top: 16px;       
+  margin-bottom: 55px;   
+  width: 100%;
+  text-align: center;
+}
