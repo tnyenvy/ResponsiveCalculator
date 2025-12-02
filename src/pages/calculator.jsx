@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Page, Box, Button, Text } from "zmp-ui";
 import "../css/calculator.css";
+import MoonIcon from '../assets/moon.svg';
+import SunIcon from '../assets/sun.svg';
+
 
 export default function Calculator() {
   const [display, setDisplay] = useState("0");
@@ -10,48 +13,82 @@ export default function Calculator() {
   const [operation, setOperation] = useState(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
   const toggleRef = useRef(null);
+  const pageRef = useRef(null);
 
-  // Hiệu ứng chuyển theme
+  // Hiệu ứng chuyển theme với animation rõ ràng hơn
   const handleThemeToggle = (e) => {
     const button = toggleRef.current;
-    if (!button) return;
-    // vị trí toggle
+    const page = pageRef.current;
+    if (!button || !page) return;
+
+    // Vị trí toggle
     const rect = button.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
 
     // Tạo element hình tròn cho hiệu ứng
     const circle = document.createElement('div');
+    circle.className = 'theme-transition-circle';
     circle.style.position = 'fixed';
     circle.style.left = `${x}px`;
     circle.style.top = `${y}px`;
-    circle.style.width = '0';
-    circle.style.height = '0';
     circle.style.borderRadius = '50%';
     circle.style.transform = 'translate(-50%, -50%)';
     circle.style.pointerEvents = 'none';
-    circle.style.zIndex = '9999';
-    circle.style.transition = 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
-    circle.style.backgroundColor = isDark ? '#F1F2F3' : '#000000';
-    document.body.appendChild(circle);
+    circle.style.zIndex = '999';
+    circle.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-    // Trigger animation
-    requestAnimationFrame(() => {
+    if (isDark) {
+      // Dark -> Light
+      circle.style.width = '30px';
+      circle.style.height = '30px';
+      circle.style.backgroundColor = '#F1F2F3';
+      circle.style.opacity = '1';
+      
+      document.body.appendChild(circle);
+      
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const maxDimension = Math.max(window.innerWidth, window.innerHeight);
+          const diameter = maxDimension * 3;
+          circle.style.width = `${diameter}px`;
+          circle.style.height = `${diameter}px`;
+        });
+      });
+      
+      setTimeout(() => {
+        setIsDark(false);
+      }, 200);
+
+    } else {
+      // Light -> Dark
       const maxDimension = Math.max(window.innerWidth, window.innerHeight);
-      const diameter = maxDimension * 2.5;
+      const diameter = maxDimension * 3;
+      
       circle.style.width = `${diameter}px`;
       circle.style.height = `${diameter}px`;
-    });
+      circle.style.backgroundColor = '#000000';
+      circle.style.opacity = '1';
+      
+      document.body.appendChild(circle);
+      
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          circle.style.width = '30px';
+          circle.style.height = '30px';
+          circle.style.opacity = '0';
+        });
+      });
 
-    // Đổi theme sau một chút delay
-    setTimeout(() => {
-      setIsDark(!isDark);
-    }, 100);
+      setIsDark(true);
+    }
 
     // Xóa element sau khi animation hoàn thành
     setTimeout(() => {
-      document.body.removeChild(circle);
-    }, 600);
+      if (document.body.contains(circle)) {
+        document.body.removeChild(circle);
+      }
+    }, 300);
   };
 
   const handleNumber = (num) => {
@@ -67,16 +104,15 @@ export default function Calculator() {
     const currentValue = parseFloat(display.replace(/,/g, ''));
     
     if (previousValue !== null && operation && !shouldResetDisplay) {
-      // Thực hiện phép tính trước đó
       const result = performCalculation(previousValue, currentValue, operation);
+      
       setDisplay(String(result));
       setPreviousValue(result);
-      setEquation(`${result}${op}`);
+      setEquation(`${formatNumber(String(result))}${op}`);
     } else {
       setPreviousValue(currentValue);
-      setEquation(`${display}${op}`);
+      setEquation(`${formatNumber(display)}${op}`);
     }
-    
     setOperation(op);
     setShouldResetDisplay(true);
   };
@@ -101,12 +137,17 @@ export default function Calculator() {
 
   const handleEquals = () => {
     if (previousValue === null || operation === null) return;
-
     const currentValue = parseFloat(display.replace(/,/g, ''));
-    const result = performCalculation(previousValue, currentValue, operation);
+    let result = performCalculation(previousValue, currentValue, operation);
+    
+    // Làm tròn 3 chữ số thập phân
+    if (result !== "Error") {
+      result = Math.round(result * 1000) / 1000;
+    }
     
     setDisplay(String(result));
-    setEquation("");
+    setEquation(`${formatNumber(String(previousValue))} ${operation} ${formatNumber(String(currentValue))}`);
+    
     setPreviousValue(null);
     setOperation(null);
     setShouldResetDisplay(true);
@@ -156,7 +197,7 @@ export default function Calculator() {
   };
 
   return (
-    <Page className={isDark ? "calc dark" : "calc"}>
+    <Page ref={pageRef} className={isDark ? "calc dark" : "calc"}>
       <Box className="calculator-wrapper">
 
         <Box className="theme-toggle">
@@ -166,18 +207,11 @@ export default function Calculator() {
             onClick={handleThemeToggle}>
 
             <div className="toggle-icon">
-              {isDark ? (
-                // Icon Mặt trăng (Dark mode)
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="#4B5EFC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              ) : (
-                // Icon Mặt trời (Light mode)
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="5" stroke="#4B5EFC" strokeWidth="2"/>
-                  <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="#4B5EFC" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              )}
+                {isDark ? (
+                    <img src={MoonIcon} alt="Moon" width="20" height="20" />
+                ) : (
+                    <img src={SunIcon} alt="Sun" width="20" height="20" />
+                )}
             </div>
 
             {/* Hình tròn */}

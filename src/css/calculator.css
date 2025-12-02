@@ -5,7 +5,10 @@
   flex-direction: column;
   padding: 20px;
   height: 100vh;
-  background: F1F2F3;
+  background: #F1F2F3;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .calc.dark {
@@ -20,8 +23,8 @@
   align-items: flex-end;    
   justify-content: flex-end;
   flex-grow: 1;   
-  padding: 0 20px; 
-  margin-bottom: 20px; 
+  padding: 0 16px; 
+  margin-bottom: 16px; 
   margin-top: 0;      
 }
 
@@ -56,15 +59,16 @@
   width: 100%;
   height: 100vh;       
   overflow: hidden;  
-  background: inherit; 
+  background: inherit;
+  position: relative;
+  z-index: 2;
 }
-
 
 /* Buttons */
 .btn {
-  width: 100%;
+  width: 110%;
   height: 72px; 
-  border-radius: 28%; 
+  border-radius: 30%; 
   font-size: 28px;
   font-family: 'Work Sans', sans-serif;
   border: none;
@@ -72,6 +76,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.95);
+  opacity: 0.8;
 }
 
 .btn-backspace {
@@ -81,7 +91,7 @@
   align-items: center;
 }
 
-/*LIGHT MODE (MÀU SẮC MẶC ĐỊNH) */
+/*LIGHT MODE  */
 .btn.gray {
   background: #FFFFFF; 
   color: black;      
@@ -90,7 +100,6 @@
 .btn.dark {
   background: #FFFFFF; 
 }
-
 
 .btn.blue {
   background: #4B5EFC;
@@ -111,8 +120,8 @@
 .calc-keypad {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;           
-  padding: 0 20px;
+  gap: 16px;           
+  padding: 0 16px;
   margin-bottom: 20px; 
   flex-shrink: 0; 
 }
@@ -131,7 +140,8 @@
   width: 134px;   
   height: 5px;
   background-color: #000000; 
-  border-radius: 100px;      
+  border-radius: 100px;
+  transition: all 0.3s ease;
 }
 
 .calc.dark .home-indicator-bar {
@@ -171,39 +181,41 @@
 }
 
 .toggle-switch-thumb {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%; 
-    transform: translateY(-50%);
-    left: 2px;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 3px 8px rgba(0,0,0,0.15); 
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; 
+  transform: translateY(-50%);
+  left: 2px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.15); 
 }
 
 /* Light mode */
 .toggle-switch-track.light .toggle-switch-thumb {
-    background-color: transparent; 
-    box-shadow: none;             
+  background-color: transparent; 
+  box-shadow: none;             
 }
 .toggle-switch-track.light .toggle-switch-thumb svg {
-    color: #4B5EFC; 
-    width: 18px; height: 18px; 
+  color: #4B5EFC; 
+  width: 18px; 
+  height: 18px; 
 }
 
 /* Dark mode */
 .toggle-switch-track.dark .toggle-switch-thumb {
-    left: calc(100% - 30px);
-    background-color: transparent; 
-    box-shadow: none;
+  left: calc(100% - 30px);
+  background-color: transparent; 
+  box-shadow: none;
 }
 .toggle-switch-track.dark .toggle-switch-thumb svg {
-    color: #4B5EFC; 
-    width: 18px; height: 18px; 
+  color: #4B5EFC; 
+  width: 18px; 
+  height: 18px; 
 }
 
 .toggle-switch {
@@ -212,7 +224,7 @@
   border-radius: 16px;
   position: relative;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
   border: 1px solid transparent;
 }
 
@@ -230,7 +242,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,7 +257,6 @@
   left: calc(100% - 26px); 
 }
 
-
 /* CIRCLE */
 .toggle-circle {
   width: 24px; 
@@ -253,7 +264,7 @@
   border-radius: 50%;
   position: absolute;
   top: 3px;   
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   z-index: 1;
 }
 
@@ -261,46 +272,124 @@
   left: calc(100% - 28px); 
   background-color: #D2D3DA; 
 }
+
 .toggle-switch.dark .toggle-circle {
   left: 4px;
   background-color: #4E505F; 
 }
 
-
-.calc {
-  position: relative;
-  overflow: hidden;
+/* TRANSITION */
+.theme-transition-circle {
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.3);
 }
 
-.calc::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
-  pointer-events: none;
-  z-index: 1;
+.calc * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.calc.transitioning::before {
-  width: 200vmax;
-  height: 200vmax;
-  transform: translate(-50%, -50%) scale(1);
+
+/* Réponsive */
+/* Small phones (< 375px) */
+@media (max-width: 374px) {
+  .calc {
+    padding: 15px;
+  }
+  
+  .calc-display {
+    padding: 0 15px;
+    margin-bottom: 15px;
+  }
+  
+  .calc-keypad {
+    padding: 0 15px;
+    gap: 8px;
+  }
+  
+  .btn {
+    height: 55px;
+    font-size: 22px;
+  }
 }
 
-.calc.transitioning.to-dark::before {
-  background-color: #000000;
+/* Standard phones (375px - 812px) - iPhone 13 mini to iPhone 14 Pro Max */
+@media (min-width: 375px) and (max-width: 812px) {
+  .calc {
+    padding: 16px;
+  }
 }
 
-.calc.transitioning.to-light::before {
-  background-color: #F1F2F3;
+
+/* Tablets (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .calc {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  
+  .calc-display .equation {
+    font-size: 32px;
+  }
+  
+  .calc-display .result {
+    font-size: 80px;
+  }
+  
+  .btn {
+    height: 90px;
+    font-size: 36px;
+  }
+  
+  .calc-keypad {
+    gap: 18px;
+  }
+  
+  .toggle-switch {
+    width: 80px;
+    height: 36px;
+  }
+  
+  .toggle-circle {
+    width: 28px;
+    height: 28px;
+  }
 }
 
-.calculator-wrapper {
-  position: relative;
-  z-index: 2;
+/* Landscape mode for phones */
+@media (max-height: 600px) and (orientation: landscape) {
+  .calc {
+    padding: 10px;
+  }
+  
+  .calc-display {
+    margin-bottom: 10px;
+    min-height: 80px;
+  }
+  
+  .calc-display .equation {
+    font-size: 18px;
+  }
+  
+  .calc-display .result {
+    font-size: 40px;
+  }
+  
+  .btn {
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .calc-keypad {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .theme-toggle {
+    margin-top: 5px;
+  }
+  
+  .home-indicator-container {
+    height: 24px;
+    padding-bottom: 4px;
+  }
 }
