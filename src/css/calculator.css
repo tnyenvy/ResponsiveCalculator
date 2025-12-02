@@ -141,9 +141,166 @@
 
 /* Theme toggle */
 .theme-toggle {
-  margin-top: 10px;    
-  margin-bottom: 0;    
+  margin-top: 10px;
+  margin-bottom: 0;
   width: 100%;
-  text-align: center;
-  flex-shrink: 0;    
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-switch-track {
+  width: 72px;  
+  height: 32px; 
+  border-radius: 16px; 
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  border: 1px solid transparent;
+}
+
+/* Màu nền Light Mode */
+.toggle-switch-track.light {
+  background-color: #FFFFFF; 
+  border-color: #D1D1D6;
+}
+
+/* Màu nền Dark Mode */
+.toggle-switch-track.dark {
+  background-color: #2E2F38; 
+  border-color: #4E505F;
+}
+
+.toggle-switch-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%);
+    left: 2px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.15); 
+}
+
+/* Light mode */
+.toggle-switch-track.light .toggle-switch-thumb {
+    background-color: transparent; 
+    box-shadow: none;             
+}
+.toggle-switch-track.light .toggle-switch-thumb svg {
+    color: #4B5EFC; 
+    width: 18px; height: 18px; 
+}
+
+/* Dark mode */
+.toggle-switch-track.dark .toggle-switch-thumb {
+    left: calc(100% - 30px);
+    background-color: transparent; 
+    box-shadow: none;
+}
+.toggle-switch-track.dark .toggle-switch-thumb svg {
+    color: #4B5EFC; 
+    width: 18px; height: 18px; 
+}
+
+.toggle-switch {
+  width: 72px;
+  height: 32px;
+  border-radius: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.toggle-switch.light {
+  background-color: #FFFFFF; 
+  border-color: #D1D1D6;
+}
+
+.toggle-switch.dark {
+  background-color: #2E2F38;
+  border-color: #4E505F;
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; 
+}
+
+.toggle-switch.light .toggle-icon {
+  left: 6px; 
+}
+
+.toggle-switch.dark .toggle-icon {
+  left: calc(100% - 26px); 
+}
+
+
+/* CIRCLE */
+.toggle-circle {
+  width: 24px; 
+  height: 24px;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;   
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  z-index: 1;
+}
+
+.toggle-switch.light .toggle-circle {
+  left: calc(100% - 28px); 
+  background-color: #D2D3DA; 
+}
+.toggle-switch.dark .toggle-circle {
+  left: 4px;
+  background-color: #4E505F; 
+}
+
+
+.calc {
+  position: relative;
+  overflow: hidden;
+}
+
+.calc::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.calc.transitioning::before {
+  width: 200vmax;
+  height: 200vmax;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.calc.transitioning.to-dark::before {
+  background-color: #000000;
+}
+
+.calc.transitioning.to-light::before {
+  background-color: #F1F2F3;
+}
+
+.calculator-wrapper {
+  position: relative;
+  z-index: 2;
 }
