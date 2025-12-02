@@ -68,9 +68,8 @@ export default function Calculator() {
         {equation && <Text className="equation">{equation}</Text>}
         <Text className="result">{formatNumber(display)}</Text>
     </Box>
-    </Box>
       {/* Buttons */}
-      <Box className="calc-grid">
+      <Box className="calc-keypad">
         <button onClick={handleClear} className="btn gray">C</button>
         <button onClick={handlePlusMinus} className="btn gray">+/-</button>
         <button onClick={handlePercent} className="btn gray">%</button>
@@ -93,9 +92,14 @@ export default function Calculator() {
 
         <button onClick={handleDecimal} className="btn dark">.</button>
         <button onClick={() => handleNumber("0")} className="btn dark">0</button>
-        <button onClick={handleBackspace} className="btn dark">⌫</button>
+        <button onClick={handleBackspace} className="btn dark btn-backspace">⌫ </button>
         <button onClick={handleEquals} className="btn blue">=</button>
       </Box>
+    </Box>
+    {/* HOME INDICATOR */}
+    <Box className="home-indicator-container">
+        <Box className="home-indicator-bar"></Box>
+    </Box>
     </Page>
   );
 }

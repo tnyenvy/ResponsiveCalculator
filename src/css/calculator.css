@@ -11,20 +11,30 @@
   color: white;
 }
 
-/* Display */
+/* Display Container */
 .calc-display {
-  margin-top: 50px;
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;    
+  justify-content: flex-end;
+  flex-grow: 1;   
+  padding: 0 20px; 
+  margin-bottom: 20px; 
+  margin-top: 0;      
 }
 
 .calc-display .equation {
-  font-size: 22px;
-  opacity: 0.6;
+  font-size: 24px;
+  color: #7c7c7c;
+  margin-bottom: 4px;
+  line-height: 1.2;
 }
 
 .calc-display .result {
-  font-size: 56px;
+  font-size: 64px;   
   font-weight: 300;
+  line-height: 1;     
+  word-break: break-all;
 }
 
 /* Grid */
@@ -38,19 +48,31 @@
 /* wrapper */
 .calculator-wrapper {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   width: 100%;
+  height: 100vh;       
+  overflow: hidden;  
+  background: inherit; 
 }
 
 
 /* Buttons */
 .btn {
-  height: 70px;
-  border-radius: 50%;
-  font-size: 26px;
-  font-weight: 300;
+  height: 72px; 
+  border-radius: 30%;
+  font-size: 28px;
   border: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-backspace {
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn.gray {
@@ -76,10 +98,41 @@
   color: white;
 }
 
+.calc-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;           
+  padding: 0 20px;
+  margin-bottom: 20px; 
+  flex-shrink: 0; 
+}
+
+.home-indicator-container {
+  width: 100%;
+  height: 34px; 
+  display: flex;
+  justify-content: center; 
+  align-items: flex-end;   
+  padding-bottom: 8px; 
+}
+
+.home-indicator-bar {
+  width: 134px;   
+  height: 5px;
+  background-color: #000000; 
+  border-radius: 100px;      
+}
+
+.calc.dark .home-indicator-bar {
+  background-color: #ffffff;
+  opacity: 0.8; 
+}
+
 /* Theme toggle */
 .theme-toggle {
-  margin-top: 16px;       
-  margin-bottom: 55px;   
+  margin-top: 10px;    
+  margin-bottom: 0;    
   width: 100%;
   text-align: center;
+  flex-shrink: 0;    
 }
