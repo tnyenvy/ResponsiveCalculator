@@ -17,13 +17,11 @@ function HomePage() {
 
   return (
     <Page className="p-4 flex flex-col items-center space-y-4">
-      <Text.Title>Home Page</Text.Title>
-
+      <Text.Title>Zalo Mini Calculator</Text.Title>
       <Button
-        variant="primary"
-        onClick={() => setShowCalculator(true)}
-      >
-        Mở Calculator
+      className="btn-launch-calc" 
+      onClick={() => setShowCalculator(true)}>
+        Responsive Calculator
       </Button>
     </Page>
   );

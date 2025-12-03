@@ -100,6 +100,8 @@ export default function Calculator() {
     }
   };
 
+
+  //Các hàm xử lý toán học
   const handleOperator = (op) => {
     const currentValue = parseFloat(display.replace(/,/g, ''));
     
@@ -146,7 +148,7 @@ export default function Calculator() {
     }
     
     setDisplay(String(result));
-    setEquation(`${formatNumber(String(previousValue))} ${operation} ${formatNumber(String(currentValue))}`);
+    setEquation(`${formatNumber(String(previousValue))}${operation}${formatNumber(String(currentValue))}`);
     
     setPreviousValue(null);
     setOperation(null);

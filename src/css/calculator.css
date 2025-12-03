@@ -29,15 +29,16 @@
 }
 
 .calc-display .equation {
-  font-size: 25px;
+  font-size: 35px;
   font-family: 'Work Sans', sans-serif;
   color: #7c7c7c;
   margin-bottom: 4px;
+  font-weight: 300;
   line-height: 1.2;
 }
 
 .calc-display .result {
-  font-size: 64px;   
+  font-size: 65px;   
   font-family: 'Work Sans', sans-serif;
   font-weight: 300;
   line-height: 1;     
@@ -151,8 +152,8 @@
 
 /* Theme toggle */
 .theme-toggle {
-  margin-top: 10px;
-  margin-bottom: 0;
+  margin-top: 50px;
+  margin-bottom: 55px;
   width: 100%;
   display: flex;
   justify-content: center;
