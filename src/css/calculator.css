@@ -3,7 +3,7 @@
 .calc {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 0;
   height: 100vh;
   background: #F1F2F3;
   position: relative;
@@ -14,6 +14,73 @@
 .calc.dark {
   background: black;
   color: white;
+}
+
+/* Status Bar */
+.status-bar {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+  background: inherit;
+}
+
+.status-time {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  margin-top: 10px;
+}
+
+.calc.dark .status-time {
+  color: white;
+}
+
+/* Notch */
+.notch {
+  position: absolute;
+  width: 164px;
+  height: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  background: black;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 101;
+}
+.calc.dark .notch {
+  background: black;
+}
+
+/* Status Icons */
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.calc.dark .status-icons {
+  color: white;
+}
+
+.mobile-signal {
+  width: 16px;
+  height: 12px;
+}
+
+.wifi {
+  width: 16px;
+  height: 12px;
+}
+
+.battery {
+  width: 25px;
+  height: 12px;
 }
 
 /* Display Container */
@@ -29,7 +96,7 @@
 }
 
 .calc-display .equation {
-  font-size: 35px;
+  font-size: 40px;
   font-family: 'Work Sans', sans-serif;
   color: #7c7c7c;
   margin-bottom: 4px;
@@ -45,29 +112,22 @@
   word-break: break-all;
 }
 
-/* Grid */
-.calc-grid {
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
 /* wrapper */
 .calculator-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;       
+  flex: 1;
   overflow: hidden;  
   background: inherit;
   position: relative;
-  z-index: 2;
+  z-index: 10;
+  padding: 0 20px 20px 20px;
 }
 
 /* Buttons */
 .btn {
-  width: 110%;
+  width: 100%;
   height: 72px; 
   border-radius: 30%; 
   font-size: 28px;
@@ -100,6 +160,7 @@
 
 .btn.dark {
   background: #FFFFFF; 
+  color: black;
 }
 
 .btn.blue {
@@ -122,7 +183,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;           
-  padding: 0 16px;
+  padding: 0;
   margin-bottom: 20px; 
   flex-shrink: 0; 
 }
@@ -152,71 +213,13 @@
 
 /* Theme toggle */
 .theme-toggle {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 55px;
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.toggle-switch-track {
-  width: 72px;  
-  height: 32px; 
-  border-radius: 16px; 
   position: relative;
-  cursor: pointer;
-  transition: all 0.4s ease-in-out;
-  border: 1px solid transparent;
-}
-
-/* Màu nền Light Mode */
-.toggle-switch-track.light {
-  background-color: #FFFFFF; 
-  border-color: #D1D1D6;
-}
-
-/* Màu nền Dark Mode */
-.toggle-switch-track.dark {
-  background-color: #2E2F38; 
-  border-color: #4E505F;
-}
-
-.toggle-switch-thumb {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%; 
-  transform: translateY(-50%);
-  left: 2px;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.15); 
-}
-
-/* Light mode */
-.toggle-switch-track.light .toggle-switch-thumb {
-  background-color: transparent; 
-  box-shadow: none;             
-}
-.toggle-switch-track.light .toggle-switch-thumb svg {
-  color: #4B5EFC; 
-  width: 18px; 
-  height: 18px; 
-}
-
-/* Dark mode */
-.toggle-switch-track.dark .toggle-switch-thumb {
-  left: calc(100% - 30px);
-  background-color: transparent; 
-  box-shadow: none;
-}
-.toggle-switch-track.dark .toggle-switch-thumb svg {
-  color: #4B5EFC; 
-  width: 18px; 
-  height: 18px; 
+  z-index: 10;  
 }
 
 .toggle-switch {
@@ -281,19 +284,29 @@
 
 /* TRANSITION */
 .theme-transition-circle {
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.3);
+  will-change: transform, width, height, opacity;
+  mix-blend-mode: normal;
+  pointer-events: none;
 }
 
 .calc * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
+/* hieejnn các components khi chuyển hiệu ứng */
+.calc-display,
+.calc-keypad,
+.theme-toggle,
+.home-indicator-container {
+  position: relative;
+  z-index: 10;
+}
 
-/* Réponsive */
+/* Responsive */
 /* Small phones (< 375px) */
 @media (max-width: 374px) {
-  .calc {
-    padding: 15px;
+  .calculator-wrapper {
+    padding: 0 15px 15px 15px;
   }
   
   .calc-display {
@@ -302,7 +315,6 @@
   }
   
   .calc-keypad {
-    padding: 0 15px;
     gap: 8px;
   }
   
@@ -310,22 +322,25 @@
     height: 55px;
     font-size: 22px;
   }
-}
-
-/* Standard phones (375px - 812px) - iPhone 13 mini to iPhone 14 Pro Max */
-@media (min-width: 375px) and (max-width: 812px) {
-  .calc {
-    padding: 16px;
+  
+  .status-bar {
+    padding: 0 15px;
   }
 }
 
+/*Responsive*/
+/* Standard phones (375px - 812px) */
+@media (min-width: 375px) and (max-width: 812px) {
+  .calculator-wrapper {
+    padding: 0 16px 16px 16px;
+  }
+}
 
 /* Tablets (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .calc {
     max-width: 500px;
     margin: 0 auto;
-    padding: 40px;
   }
   
   .calc-display .equation {
@@ -344,27 +359,17 @@
   .calc-keypad {
     gap: 18px;
   }
-  
-  .toggle-switch {
-    width: 80px;
-    height: 36px;
-  }
-  
-  .toggle-circle {
-    width: 28px;
-    height: 28px;
-  }
 }
 
 /* Landscape mode for phones */
 @media (max-height: 600px) and (orientation: landscape) {
-  .calc {
-    padding: 10px;
+  .calculator-wrapper {
+    padding: 0 10px 10px 10px;
   }
   
   .calc-display {
     margin-bottom: 10px;
-    min-height: 80px;
+    min-height: 60px;
   }
   
   .calc-display .equation {
@@ -386,11 +391,11 @@
   }
   
   .theme-toggle {
-    margin-top: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   
-  .home-indicator-container {
-    height: 24px;
-    padding-bottom: 4px;
+  .status-bar {
+    height: 34px;
   }
 }

@@ -10,28 +10,29 @@
 
 .section-container {
   padding: 16px;
-  background: #F1F2F3;
+  background-color: #F1F2F3;
   border-radius: 8px;
   margin-bottom: 24px;
 }
 
 .btn-launch-calc {
-  position: fixed;        
-  top: 50%;             
-  left: 50%;             
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;             
+  margin: 0;
   z-index: 100;
-  background-color: #4B5EFC !important;
+  background: linear-gradient(90deg, #678bad 0%, #002339 150%) !important;
   color: white !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
   font-family: 'Work Sans', sans-serif;
   font-size: 18px;
   font-weight: 500;
-  padding: 0 32px;       
-  height: 56px;         
-  border-radius: 100px; 
+  padding: 0 32px;
+  height: 56px;
+  border-radius: 100px;
   border: none;
-  box-shadow: 0 8px 20px rgba(75, 94, 252, 0.3); 
+  box-shadow: 0 8px 20px rgba(0, 35, 57, 0.3); 
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   align-items: center;
@@ -39,7 +40,7 @@
 }
 
 .btn-launch-calc:active {
-  box-shadow: 0 4px 10px rgba(75, 94, 252, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 35, 57, 0.3);
 }
 
 .zaui-list-item {

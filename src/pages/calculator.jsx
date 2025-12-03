@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
-import { Page, Box, Button, Text } from "zmp-ui";
+import React, { useState, useRef, useEffect } from "react";
+import { Page, Box, Text } from "zmp-ui";
 import "../css/calculator.css";
 import MoonIcon from '../assets/moon.svg';
 import SunIcon from '../assets/sun.svg';
-
 
 export default function Calculator() {
   const [display, setDisplay] = useState("0");
@@ -12,85 +11,83 @@ export default function Calculator() {
   const [previousValue, setPreviousValue] = useState(null);
   const [operation, setOperation] = useState(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
+  const [currentTime, setCurrentTime] = useState("");
   const toggleRef = useRef(null);
   const pageRef = useRef(null);
 
-  // Hiệu ứng chuyển theme với animation rõ ràng hơn
+  // Cập nhật thời gian
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+    };
+    
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Hiệu ứng chuyển theme
   const handleThemeToggle = (e) => {
     const button = toggleRef.current;
-    const page = pageRef.current;
-    if (!button || !page) return;
+    if (!button) return;
 
-    // Vị trí toggle
     const rect = button.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
 
-    // Tạo element hình tròn cho hiệu ứng
-    const circle = document.createElement('div');
-    circle.className = 'theme-transition-circle';
-    circle.style.position = 'fixed';
-    circle.style.left = `${x}px`;
-    circle.style.top = `${y}px`;
-    circle.style.borderRadius = '50%';
-    circle.style.transform = 'translate(-50%, -50%)';
-    circle.style.pointerEvents = 'none';
-    circle.style.zIndex = '999';
-    circle.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    const maxRadius = Math.sqrt(
+      Math.pow(Math.max(x, window.innerWidth - x), 2) +
+      Math.pow(Math.max(y, window.innerHeight - y), 2)
+    );
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.zIndex = '1';
+    overlay.style.transition = 'clip-path 0.7s cubic-bezier(0.4, 0.0, 0.2, 1)';
 
     if (isDark) {
-      // Dark -> Light
-      circle.style.width = '30px';
-      circle.style.height = '30px';
-      circle.style.backgroundColor = '#F1F2F3';
-      circle.style.opacity = '1';
+      overlay.style.backgroundColor = '#F1F2F3';
+      overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+      setIsDark(false);
       
-      document.body.appendChild(circle);
+      document.body.appendChild(overlay);
       
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          const maxDimension = Math.max(window.innerWidth, window.innerHeight);
-          const diameter = maxDimension * 3;
-          circle.style.width = `${diameter}px`;
-          circle.style.height = `${diameter}px`;
+          overlay.style.clipPath = `circle(${maxRadius * 1.5}px at ${x}px ${y}px)`;
         });
       });
-      
-      setTimeout(() => {
-        setIsDark(false);
-      }, 200);
-
     } else {
-      // Light -> Dark
-      const maxDimension = Math.max(window.innerWidth, window.innerHeight);
-      const diameter = maxDimension * 3;
+      overlay.style.backgroundColor = '#000000';
+      overlay.style.clipPath = `circle(${maxRadius * 1.5}px at ${x}px ${y}px)`;
       
-      circle.style.width = `${diameter}px`;
-      circle.style.height = `${diameter}px`;
-      circle.style.backgroundColor = '#000000';
-      circle.style.opacity = '1';
-      
-      document.body.appendChild(circle);
+      document.body.appendChild(overlay);
       
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          circle.style.width = '30px';
-          circle.style.height = '30px';
-          circle.style.opacity = '0';
+          overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
         });
       });
 
       setIsDark(true);
     }
 
-    // Xóa element sau khi animation hoàn thành
     setTimeout(() => {
-      if (document.body.contains(circle)) {
-        document.body.removeChild(circle);
+      if (document.body.contains(overlay)) {
+        document.body.removeChild(overlay);
       }
-    }, 300);
+    }, 700);
   };
 
+  //Các hàm xử lý nút bấm + tính toán
   const handleNumber = (num) => {
     if (shouldResetDisplay) {
       setDisplay(num);
@@ -100,14 +97,11 @@ export default function Calculator() {
     }
   };
 
-
-  //Các hàm xử lý toán học
   const handleOperator = (op) => {
     const currentValue = parseFloat(display.replace(/,/g, ''));
     
     if (previousValue !== null && operation && !shouldResetDisplay) {
       const result = performCalculation(previousValue, currentValue, operation);
-      
       setDisplay(String(result));
       setPreviousValue(result);
       setEquation(`${formatNumber(String(result))}${op}`);
@@ -121,19 +115,14 @@ export default function Calculator() {
 
   const performCalculation = (prev, current, op) => {
     switch (op) {
-      case "+":
-        return prev + current;
+      case "+": return prev + current;
       case "−":
-      case "-":
-        return prev - current;
+      case "-": return prev - current;
       case "×":
-      case "*":
-        return prev * current;
+      case "*": return prev * current;
       case "÷":
-      case "/":
-        return current !== 0 ? prev / current : "Error";
-      default:
-        return current;
+      case "/": return current !== 0 ? prev / current : "Error";
+      default: return current;
     }
   };
 
@@ -142,14 +131,13 @@ export default function Calculator() {
     const currentValue = parseFloat(display.replace(/,/g, ''));
     let result = performCalculation(previousValue, currentValue, operation);
     
-    // Làm tròn 3 chữ số thập phân
+    //Lấy 2 số thập phân
     if (result !== "Error") {
-      result = Math.round(result * 1000) / 1000;
+      result = Math.round(result * 100) / 100;
     }
     
     setDisplay(String(result));
     setEquation(`${formatNumber(String(previousValue))}${operation}${formatNumber(String(currentValue))}`);
-    
     setPreviousValue(null);
     setOperation(null);
     setShouldResetDisplay(true);
@@ -200,23 +188,49 @@ export default function Calculator() {
 
   return (
     <Page ref={pageRef} className={isDark ? "calc dark" : "calc"}>
+      {/* Status Bar */}
+      <Box className="status-bar">
+        {/* Time */}
+        <div className="status-time">{currentTime}</div>
+        {/* Notch */}
+        <div className="notch"></div>
+        {/* Right Icons */}
+        <div className="status-icons">
+          {/* Mobile Signal */}
+          <svg className="mobile-signal" width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <rect x="0.5" y="6.5" width="2" height="4" rx="0.6" fill="currentColor"/>
+            <rect x="4.5" y="4.5" width="2" height="6" rx="0.6" fill="currentColor"/>
+            <rect x="8.5" y="2.5" width="2" height="8" rx="0.6" fill="currentColor"/>
+            <rect x="12.5" y="0.5" width="2" height="10" rx="0.6" fill="currentColor"/>
+          </svg>
+          {/* WiFi */}
+          <svg className="wifi" width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <path d="M8 10.5C8.82843 10.5 9.5 9.82843 9.5 9C9.5 8.17157 8.82843 7.5 8 7.5C7.17157 7.5 6.5 8.17157 6.5 9C6.5 9.82843 7.17157 10.5 8 10.5Z" fill="currentColor"/>
+            <path d="M4.5 6C5.5 5 6.5 4.5 8 4.5C9.5 4.5 10.5 5 11.5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            <path d="M2 3C4 1 6 0.5 8 0.5C10 0.5 12 1 14 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+          {/* Battery */}
+          <svg className="battery" width="25" height="12" viewBox="0 0 25 12" fill="none">
+            <rect x="0.5" y="1.5" width="20" height="9" rx="2" stroke="currentColor" strokeOpacity="0.4"/>
+            <rect x="2" y="3" width="17" height="6" rx="1" fill="currentColor"/>
+            <path d="M21.5 4.5V7.5C22.5 7.2 23 6.5 23 6C23 5.5 22.5 4.8 21.5 4.5Z" fill="currentColor" fillOpacity="0.4"/>
+          </svg>
+        </div>
+      </Box>
+      {/* Dark/Light */}
       <Box className="calculator-wrapper">
-
         <Box className="theme-toggle">
           <div 
             ref={toggleRef}
             className={`toggle-switch ${isDark ? "dark" : "light"}`} 
             onClick={handleThemeToggle}>
-
             <div className="toggle-icon">
-                {isDark ? (
-                    <img src={MoonIcon} alt="Moon" width="20" height="20" />
-                ) : (
-                    <img src={SunIcon} alt="Sun" width="20" height="20" />
-                )}
+              {isDark ? (
+                <img src={MoonIcon} alt="Moon" width="20" height="20" />
+              ) : (
+                <img src={SunIcon} alt="Sun" width="20" height="20" />
+              )}
             </div>
-
-            {/* Hình tròn */}
             <div className="toggle-circle"></div>
           </div>
         </Box>
