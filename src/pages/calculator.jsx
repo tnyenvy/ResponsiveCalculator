@@ -3,17 +3,36 @@ import { Page, Box, Text } from "zmp-ui";
 import "../css/calculator.css";
 import MoonIcon from '../assets/moon.svg';
 import SunIcon from '../assets/sun.svg';
+import CalculatorButton from '../components/CalculatorButton.jsx';
 
 export default function Calculator() {
   const [display, setDisplay] = useState("0");
   const [equation, setEquation] = useState("");
-  const [isDark, setIsDark] = useState(true);
   const [previousValue, setPreviousValue] = useState(null);
   const [operation, setOperation] = useState(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
   const toggleRef = useRef(null);
   const pageRef = useRef(null);
+
+  // Khởi tạo theme từ localStorage
+  const [isDark, setIsDark] = useState(() => {
+    const savedTheme = localStorage.getItem('calculator-theme');
+    return savedTheme === 'dark' || savedTheme === null; 
+  });  
+
+  // Thêm body class và localStorage khi theme thay đổi
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add('dark-theme');
+      document.body.classList.remove('light-theme');
+      localStorage.setItem('calculator-theme', 'dark');
+    } else {
+      document.body.classList.add('light-theme');
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('calculator-theme', 'light');
+    }
+  }, [isDark]);
 
   // Cập nhật thời gian
   useEffect(() => {
@@ -30,7 +49,7 @@ export default function Calculator() {
   }, []);
 
   // Hiệu ứng chuyển theme
-  const handleThemeToggle = (e) => {
+  const handleThemeToggle = () => {
     const button = toggleRef.current;
     if (!button) return;
 
@@ -87,7 +106,7 @@ export default function Calculator() {
     }, 700);
   };
 
-  //Các hàm xử lý nút bấm + tính toán
+  // Các hàm xử lý nút bấm
   const handleNumber = (num) => {
     if (shouldResetDisplay) {
       setDisplay(num);
@@ -131,7 +150,7 @@ export default function Calculator() {
     const currentValue = parseFloat(display.replace(/,/g, ''));
     let result = performCalculation(previousValue, currentValue, operation);
     
-    //Lấy 2 số thập phân
+    //Lấy 2 chữ số thập phân
     if (result !== "Error") {
       result = Math.round(result * 100) / 100;
     }
@@ -194,7 +213,7 @@ export default function Calculator() {
         <div className="status-time">{currentTime}</div>
         {/* Notch */}
         <div className="notch"></div>
-        {/* Right Icons */}
+        {/* Status Icons */}
         <div className="status-icons">
           {/* Mobile Signal */}
           <svg className="mobile-signal" width="16" height="12" viewBox="0 0 16 12" fill="none">
@@ -217,8 +236,10 @@ export default function Calculator() {
           </svg>
         </div>
       </Box>
-      {/* Dark/Light */}
+
+      {/* Calculator Wrapper */}
       <Box className="calculator-wrapper">
+        {/* Theme Toggle */}
         <Box className="theme-toggle">
           <div 
             ref={toggleRef}
@@ -243,30 +264,35 @@ export default function Calculator() {
 
         {/* Buttons */}
         <Box className="calc-keypad">
-          <button onClick={handleClear} className="btn gray">C</button>
-          <button onClick={handlePlusMinus} className="btn gray">+/-</button>
-          <button onClick={handlePercent} className="btn gray">%</button>
-          <button onClick={() => handleOperator("÷")} className="btn blue">÷</button>
+          {/* Row 1 */}
+          <CalculatorButton onClick={handleClear} className="gray">C</CalculatorButton>
+          <CalculatorButton onClick={handlePlusMinus} className="gray">+/-</CalculatorButton>
+          <CalculatorButton onClick={handlePercent} className="gray">%</CalculatorButton>
+          <CalculatorButton onClick={() => handleOperator("÷")} className="blue">÷</CalculatorButton>
 
-          <button onClick={() => handleNumber("7")} className="btn dark">7</button>
-          <button onClick={() => handleNumber("8")} className="btn dark">8</button>
-          <button onClick={() => handleNumber("9")} className="btn dark">9</button>
-          <button onClick={() => handleOperator("×")} className="btn blue">×</button>
+          {/* Row 2 */}
+          <CalculatorButton onClick={() => handleNumber("7")} className="dark">7</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("8")} className="dark">8</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("9")} className="dark">9</CalculatorButton>
+          <CalculatorButton onClick={() => handleOperator("×")} className="blue">×</CalculatorButton>
 
-          <button onClick={() => handleNumber("4")} className="btn dark">4</button>
-          <button onClick={() => handleNumber("5")} className="btn dark">5</button>
-          <button onClick={() => handleNumber("6")} className="btn dark">6</button>
-          <button onClick={() => handleOperator("-")} className="btn blue">−</button>
+          {/* Row 3 */}
+          <CalculatorButton onClick={() => handleNumber("4")} className="dark">4</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("5")} className="dark">5</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("6")} className="dark">6</CalculatorButton>
+          <CalculatorButton onClick={() => handleOperator("-")} className="blue">−</CalculatorButton>
 
-          <button onClick={() => handleNumber("1")} className="btn dark">1</button>
-          <button onClick={() => handleNumber("2")} className="btn dark">2</button>
-          <button onClick={() => handleNumber("3")} className="btn dark">3</button>
-          <button onClick={() => handleOperator("+")} className="btn blue">+</button>
+          {/* Row 4 */}
+          <CalculatorButton onClick={() => handleNumber("1")} className="dark">1</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("2")} className="dark">2</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("3")} className="dark">3</CalculatorButton>
+          <CalculatorButton onClick={() => handleOperator("+")} className="blue">+</CalculatorButton>
 
-          <button onClick={handleDecimal} className="btn dark">.</button>
-          <button onClick={() => handleNumber("0")} className="btn dark">0</button>
-          <button onClick={handleBackspace} className="btn dark btn-backspace">⌫</button>
-          <button onClick={handleEquals} className="btn blue">=</button>
+          {/* Row 5 */}
+          <CalculatorButton onClick={handleDecimal} className="dark">.</CalculatorButton>
+          <CalculatorButton onClick={() => handleNumber("0")} className="dark">0</CalculatorButton>
+          <CalculatorButton onClick={handleBackspace} className="dark btn-backspace">⌫</CalculatorButton>
+          <CalculatorButton onClick={handleEquals} className="blue">=</CalculatorButton>
         </Box>
       </Box>
 

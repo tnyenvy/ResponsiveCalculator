@@ -1,10 +1,6 @@
 import { openMiniApp } from "zmp-sdk";
 import { Box, Button, Icon, Page, Text } from "zmp-ui";
 
-import Clock from "../components/clock";
-import Logo from "../components/logo";
-import bg from "../static/bg.svg";
-
 import React, { useState } from "react";
 import Calculator from "./calculator";
 
@@ -21,7 +17,7 @@ function HomePage() {
       <Button
       className="btn-launch-calc" 
       onClick={() => setShowCalculator(true)}>
-        Responsive Calculator
+        Calculator
       </Button>
     </Page>
   );

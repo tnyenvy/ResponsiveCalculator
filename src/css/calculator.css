@@ -1,14 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap');
 
+/* Body Theme */
+body.dark-theme {
+  background: black;
+}
+body.light-theme {
+  background: #F1F2F3;
+}
+
 .calc {
   display: flex;
   flex-direction: column;
   padding: 0;
   height: 100vh;
-  background: #F1F2F3;
+  background: inherit;
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s ease;
+}
+
+/* Dark Mode Styles */
+body.dark-theme .calc {
+  background: black;
+  color: white;
+}
+
+body.light-theme .calc {
+  background: #F1F2F3;
+  color: black;
 }
 
 .calc.dark {
@@ -36,8 +55,12 @@
   margin-top: 10px;
 }
 
-.calc.dark .status-time {
+body.dark-theme .status-time {
   color: white;
+}
+
+body.light-theme .status-time {
+  color: black;
 }
 
 /* Notch */
@@ -53,9 +76,6 @@
   border-bottom-right-radius: 20px;
   z-index: 101;
 }
-.calc.dark .notch {
-  background: black;
-}
 
 /* Status Icons */
 .status-icons {
@@ -64,8 +84,13 @@
   gap: 6px;
   margin-top: 10px;
 }
-.calc.dark .status-icons {
+
+body.dark-theme .status-icons {
   color: white;
+}
+
+body.light-theme .status-icons {
+  color: black;
 }
 
 .mobile-signal {
@@ -152,23 +177,39 @@
   align-items: center;
 }
 
-/*LIGHT MODE  */
-.btn.gray {
+/* LIGHT MODE */
+body.light-theme .btn.gray {
   background: #FFFFFF; 
   color: black;      
 }
 
-.btn.dark {
+body.light-theme .btn.dark {
   background: #FFFFFF; 
   color: black;
 }
 
-.btn.blue {
+body.light-theme .btn.blue {
   background: #4B5EFC;
   color: white;        
 }
 
-/*DARK MODE*/
+/* DARK MODE */
+body.dark-theme .btn.gray {
+  background: #4E505F; 
+  color: white;       
+}
+
+body.dark-theme .btn.dark {
+  background: #2E2F38;
+  color: white;     
+}
+
+body.dark-theme .btn.blue {
+  background: #4B5EFC;
+  color: white;        
+}
+
+/* DARK MODE cho chỗ .calc.dark */
 .calc.dark .btn.gray {
   background: #4E505F; 
   color: white;       
@@ -206,9 +247,15 @@
   transition: all 0.3s ease;
 }
 
+body.dark-theme .home-indicator-bar,
 .calc.dark .home-indicator-bar {
   background-color: #ffffff;
   opacity: 0.8; 
+}
+
+body.light-theme .home-indicator-bar {
+  background-color: #000000;
+  opacity: 1; 
 }
 
 /* Theme toggle */
@@ -261,7 +308,7 @@
   left: calc(100% - 26px); 
 }
 
-/* CIRCLE */
+/* Vẽ CIRCLE */
 .toggle-circle {
   width: 24px; 
   height: 24px;
@@ -293,7 +340,7 @@
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
-/* hieejnn các components khi chuyển hiệu ứng */
+/* Hiển thị các components khi chuyển hiệu ứng */
 .calc-display,
 .calc-keypad,
 .theme-toggle,
@@ -328,7 +375,6 @@
   }
 }
 
-/*Responsive*/
 /* Standard phones (375px - 812px) */
 @media (min-width: 375px) and (max-width: 812px) {
   .calculator-wrapper {
