@@ -1,0 +1,79 @@
+.calc-button {
+  width: 100%;
+  height: 72px;
+  border-radius: 30%;
+  font-size: 28px;
+  font-family: 'Work Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  // Variants for Light Mode
+  &--gray {
+    background: #FFFFFF;
+    color: black;
+  }
+
+  &--dark {
+    background: #FFFFFF;
+    color: black;
+  }
+
+  &--blue {
+    background: #4B5EFC;
+    color: white;
+  }
+
+  // Types
+  &--backspace {
+    font-size: 26px;
+  }
+
+  // Dark Mode Styles
+  body.dark-theme & {
+    &--gray {
+      background: #4E505F;
+      color: white;
+    }
+
+    &--dark {
+      background: #2E2F38;
+      color: white;
+    }
+
+    &--blue {
+      background: #4B5EFC;
+      color: white;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 374px) {
+  .calc-button {
+    height: 55px;
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .calc-button {
+    height: 90px;
+    font-size: 36px;
+  }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .calc-button {
+    height: 50px;
+    font-size: 20px;
+  }
+}

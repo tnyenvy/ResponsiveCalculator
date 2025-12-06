@@ -1,0 +1,76 @@
+.theme-toggle {
+  margin-top: 20px;
+  margin-bottom: 55px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+
+  &__switch {
+    width: 72px;
+    height: 32px;
+    border-radius: 16px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    border: 1px solid transparent;
+
+    &--light {
+      background-color: #FFFFFF;
+      border-color: #D1D1D6;
+    }
+
+    &--dark {
+      background-color: #2E2F38;
+      border-color: #4E505F;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    .theme-toggle__switch--light & {
+      left: 6px;
+    }
+
+    .theme-toggle__switch--dark & {
+      left: calc(100% - 26px);
+    }
+  }
+
+  &__circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1;
+
+    .theme-toggle__switch--light & {
+      left: calc(100% - 28px);
+      background-color: #D2D3DA;
+    }
+
+    .theme-toggle__switch--dark & {
+      left: 4px;
+      background-color: #4E505F;
+    }
+  }
+}
+
+// Responsive
+@media (max-height: 600px) and (orientation: landscape) {
+  .theme-toggle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
